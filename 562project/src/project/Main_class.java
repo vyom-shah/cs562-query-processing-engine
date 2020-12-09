@@ -19,6 +19,6 @@ public class Main_class {
 	public static void main(String args[]) {
 		Main_class code=new Main_class();
 		code.connect();
-		data
+		
 	}
 }
