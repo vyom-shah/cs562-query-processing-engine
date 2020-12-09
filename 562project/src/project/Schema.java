@@ -27,9 +27,9 @@ public class Schema {
 			more=resultSet.next();
 			while(more) {
 				if(resultSet.getString("data_type").contains("character")) {
-					datatype.put(resultSet.getString("column_name"),"String");
+					dataType.put(resultSet.getString("column_name"),"String");
 				}else{
-					datatype.put(resultSet.getString("column_name"),"int");
+					dataType.put(resultSet.getString("column_name"),"int");
 					
 				}
 				more=resultSet.next();
@@ -39,7 +39,7 @@ public class Schema {
 			System.out.println("Connection error");
 			e.printStackTrace();
 		}
-		return datatype;
+		return dataType;
 		
 	}
 	public static void outputConnection(PrintWriter writer) {
