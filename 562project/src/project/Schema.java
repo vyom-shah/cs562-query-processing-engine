@@ -7,7 +7,8 @@ import java.util.HashMap;
 public class Schema {
 	private static final String usr="postgres";
 	private static final String password="1234";
-	private static final String url="jdbc:postgres://localhost:5432/CS562";
+//	private static final String url="jdbc:postgres://localhost:51314/project";
+	private static final String url="jdbc:postgresql://localhost/project";
 	private static HashMap<String, String> dataType=new HashMap<String, String>();
 
 	/**
