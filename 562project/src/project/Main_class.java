@@ -1,4 +1,4 @@
-package project;
+package com.mf;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -237,7 +237,7 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+			//input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
 			System.out.println("Genereration Successful");
 		}
 		else if(query.equals("EMF")) {
@@ -247,5 +247,48 @@ public class Main_class {
 		{
 			System.out.println("Please enter a valid option");
 		}
+	}
+}
+
+class FormAggregate {
+
+	String aggregate, attribute, index;
+
+	FormAggregate(String index, String aggregate, String attribute)
+	{
+		this.index = index;
+		this.attribute = attribute;
+		this.aggregate = aggregate;
+	}
+	public String getString()
+	{
+		return aggregate+""+attribute+""+index;
+	}
+}
+
+class Pair {
+	
+	public int index;
+	public String attribute;
+	
+	public Pair(int index, String attribute) {
+		this.index = index;
+		this.attribute = attribute;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
 	}
 }
