@@ -31,10 +31,10 @@ public class Main_class {
 		}
 	}
 	
-		public static void addArguments(File input_file) {
+		public void addArguments(File input) {
 		
 			try {
-				Scanner sc = new Scanner(input_file);
+				Scanner sc = new Scanner(input);
 				
 				String currentLine;
 				String [] select_attributes = null, grouping_atributes = null, fvect = null, select_condition = null, where = null, having_condition = null;
@@ -238,8 +238,33 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-			//input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
-			System.out.println("Genereration Successful");
+			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+			code.addArguments(input);
+			System.out.println("Select");
+			System.out.println(code.getSelect());
+			System.out.println("Number");
+			System.out.println(code.getNumber());
+			System.out.println("GroupBy");
+			System.out.println(code.getGroupby());
+			System.out.println("Fvect");
+
+			System.out.println(code.getFvect());
+			System.out.println("SuchThat");
+
+			System.out.println(code.getSuchthat());
+			System.out.println("getHaving");
+
+			System.out.println(code.getHaving());
+			System.out.println("getWhere");
+
+			System.out.println(code.getWhere());
+			System.out.println("size where");
+
+			System.out.println(code.getSizeWhere());
+			System.out.println("size having");
+
+			System.out.println(code.getSizeHaving());
+			System.out.println("Generation Successful");
 		}
 		else if(query.equals("EMF")) {
 			
