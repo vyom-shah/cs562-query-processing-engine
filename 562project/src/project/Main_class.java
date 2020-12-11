@@ -8,17 +8,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main_class {
-	//comment
-	//hello
+	
+	public static HashMap<String, String> dataType = new HashMap<String, String>();
 	private static List<String> select = new ArrayList<String>();
 	private static int number;
 	private static List<String> groupby = new ArrayList<String>();;
-	private static List<FormAggregate> fvect_variable = new ArrayList<FormAggregate>();;
-	private static List<Pair> suchthat = new ArrayList<Pair>();;
+	private static List<GroupVariable> fvect_variable = new ArrayList<GroupVariable>();;
+	private static List<ST> suchthat = new ArrayList<ST>();;
 	private static List<String> having = new ArrayList<String>();
 	private static List<String> where_condition = new ArrayList<String>();
 
-	public static HashMap<String, String> dataType = new HashMap<String, String>();
 	private void connect() {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -36,61 +35,61 @@ public class Main_class {
 			try {
 				Scanner sc = new Scanner(input);
 				
-				String currentLine;
+				String inputLine;
 				String [] select_attributes = null, grouping_atributes = null, fvect = null, select_condition = null, where = null, having_condition = null;
-				int numberofGV = 0;
+				int noGV = 0;
 				while (sc.hasNextLine()) {
-					currentLine = sc.nextLine();
-					if(currentLine.contains("select_variables"))
+					inputLine = sc.nextLine();
+					if(inputLine.contains("select_attribute"))
 					{
-						currentLine = currentLine.replaceAll(".+:","");
-						select_attributes = currentLine.split(", ");
+						inputLine = inputLine.replaceAll(".+:","");
+						select_attributes = inputLine.split(", ");
 					}
-					else if(currentLine.contains("number_of_gv"))
+					else if(inputLine.contains("no_gv"))
 					{
-						currentLine = currentLine.replaceAll(".+:","");
-						numberofGV = Integer.parseInt(currentLine);
+						inputLine = inputLine.replaceAll(".+:","");
+						noGV = Integer.parseInt(inputLine);
 					}
-					else if(currentLine.contains("grouping_attributes"))
+					else if(inputLine.contains("grouping_attributes"))
 					{
-						currentLine = currentLine.replaceAll(".+:","");
-						grouping_atributes = currentLine.split(", ");
+						inputLine = inputLine.replaceAll(".+:","");
+						grouping_atributes = inputLine.split(", ");
 					}
-					else if(currentLine.contains("where"))
+					else if(inputLine.contains("where"))
 					{
 						//If there is no where condition set it to null.
-						currentLine = currentLine.replaceAll(".+:", "");
-						if(currentLine.equals(""))
+						inputLine = inputLine.replaceAll(".+:", "");
+						if(inputLine.equals(""))
 						{
 							where = null;
 						}
 						else
 						{
-							where = currentLine.split(", ");
+							where = inputLine.split(", ");
 						}
 						
 					}
-					else if(currentLine.contains("fvect"))
+					else if(inputLine.contains("fvect"))
 					{
-						currentLine = currentLine.replaceAll(".+:","");
-						fvect = currentLine.split(", ");
+						inputLine = inputLine.replaceAll(".+:","");
+						fvect = inputLine.split(", ");
 					}
-					else if(currentLine.contains("select_condition"))
+					else if(inputLine.contains("select"))
 					{
-						currentLine = currentLine.replaceAll(".+:","");
-						select_condition= currentLine.split(", ");
+						inputLine = inputLine.replaceAll(".+:","");
+						select_condition= inputLine.split(", ");
 					}
-					else if(currentLine.contains("having_condition"))
+					else if(inputLine.contains("having_condition"))
 					{
 						//If there is no having condition set it to null.
-						currentLine = currentLine.replaceAll(".+:","");
-						if(currentLine.equals(""))
+						inputLine = inputLine.replaceAll(".+:","");
+						if(inputLine.equals(""))
 						{
 							having_condition = null;
 						}
 						else
 						{
-							having_condition= currentLine.split(", ");
+							having_condition= inputLine.split(", ");
 						}
 						
 					}
@@ -101,7 +100,7 @@ public class Main_class {
 				}
 				
 				
-			getArguments(select_attributes, grouping_atributes, fvect, select_condition, numberofGV, where, having_condition);
+			getArguments(select_attributes, grouping_atributes, fvect, select_condition, noGV, where, having_condition);
 			
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -118,12 +117,13 @@ public class Main_class {
 		 * @param grouping_atributes
 		 * @param fvect
 		 * @param select_condition
-		 * @param numberofGV
+		 * @param noGV
 		 * @param where
 		 * @param having_condition
 		 */
+		
 		private static void getArguments(String[] select_attributes, String[] grouping_atributes, String[] fvect,
-				String[] select_condition, int numberofGV, String[] where, String[] having_condition) {
+				String[] select_condition, int noGV, String[] where, String[] having_condition) {
 			// TODO Auto-generated method stub
 			
 			
@@ -132,8 +132,8 @@ public class Main_class {
 			{
 				if(str.contains("_"))
 				{
-					String [] temp = str.split("_");
-					FormAggregate fa = new FormAggregate(temp[0], temp[1], temp[2]);
+					String [] value = str.split("_");
+					GroupVariable fa = new GroupVariable(value[0], value[1], value[2]);
 					select.add(fa.getString());
 				}
 				else
@@ -143,7 +143,7 @@ public class Main_class {
 			}
 			
 			//Setting number  of grouping variables.
-			number = numberofGV;
+			number = noGV;
 			for(String str: grouping_atributes)
 			{
 				groupby.add(str); 
@@ -161,16 +161,16 @@ public class Main_class {
 			//Setting FVect variable
 			for(String str: fvect)
 			{
-				String [] temp = str.split("_");
-				FormAggregate fa = new FormAggregate(temp[0], temp[1], temp[2]);
+				String [] value = str.split("_");
+				GroupVariable fa = new GroupVariable(value[0], value[1], value[2]);
 				fvect_variable.add(fa);
 			}
 			
 			//Setting such that clause in select_condition variable
 			for(String str: select_condition)
 			{		
-				String [] temp = str.split("_");		
-				Pair pair = new Pair( Integer.parseInt(temp[0]), temp[1]);
+				String [] value = str.split("_");		
+				ST pair = new ST( Integer.parseInt(value[0]), value[1]);
 				suchthat.add(pair);
 			}
 			
@@ -198,11 +198,11 @@ public class Main_class {
 			return groupby;
 		}
 
-		public List<FormAggregate> getFvect() {
+		public List<GroupVariable> getFvect() {
 			return fvect_variable;
 		}
 
-		public List<Pair> getSuchthat() {
+		public List<ST> getSuchthat() {
 			return suchthat;
 		}
 
@@ -228,7 +228,9 @@ public class Main_class {
 		File input;
 		Main_class code=new Main_class();
 		code.connect();
-		dataType=Schema.getInformationSchema();
+		dataType=Schema.getSchema();
+		
+		System.out.println(dataType);
 		
 		System.out.println("Please enter MF of EMF depending on what type of query you want to run");
 		Scanner in= new Scanner(System.in);
@@ -240,6 +242,7 @@ public class Main_class {
 		{
 			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
 			code.addArguments(input);
+			
 			System.out.println("Select");
 			System.out.println(code.getSelect());
 			System.out.println("Number");
@@ -261,10 +264,13 @@ public class Main_class {
 			System.out.println("size where");
 
 			System.out.println(code.getSizeWhere());
-			System.out.println("size having");
+			System.out.println("getSize");
 
 			System.out.println(code.getSizeHaving());
 			System.out.println("Generation Successful");
+			
+			System.out.println("\n\n");
+			System.out.println();
 		}
 		else if(query.equals("EMF")) {
 			
@@ -276,11 +282,11 @@ public class Main_class {
 	}
 }
 
-class FormAggregate {
+class GroupVariable {
 
 	String aggregate, attribute, index;
 
-	FormAggregate(String index, String aggregate, String attribute)
+	GroupVariable(String index, String aggregate, String attribute)
 	{
 		this.index = index;
 		this.attribute = attribute;
@@ -292,12 +298,12 @@ class FormAggregate {
 	}
 }
 
-class Pair {
+class ST {
 	
 	public int index;
 	public String attribute;
 	
-	public Pair(int index, String attribute) {
+	public ST(int index, String attribute) {
 		this.index = index;
 		this.attribute = attribute;
 	}
