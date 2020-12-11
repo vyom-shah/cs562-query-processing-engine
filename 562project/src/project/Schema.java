@@ -14,7 +14,7 @@ public class Schema {
 	/**
 	 * get info schema of the DB
 	 */
-	public static HashMap<String, String> getInformationSchema(){
+	public static HashMap<String, String> getSchema(){
 		try {
 			Connection con = DriverManager.getConnection(url,usr, password);
 			System.out.println("Connection successful");
