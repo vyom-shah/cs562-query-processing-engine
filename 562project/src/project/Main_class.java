@@ -228,9 +228,13 @@ public class Main_class {
 		File input;
 		Main_class code=new Main_class();
 		code.connect();
-		dataType=Schema.getSchema();
 		
+		
+		dataType=Schema.getSchema();
 		System.out.println(dataType);
+		
+//		group=GroupVariable
+	
 		
 		System.out.println("Please enter MF of EMF depending on what type of query you want to run");
 		Scanner in= new Scanner(System.in);
@@ -289,8 +293,8 @@ class GroupVariable {
 	GroupVariable(String index, String aggregate, String attribute)
 	{
 		this.index = index;
-		this.attribute = attribute;
 		this.aggregate = aggregate;
+		this.attribute = attribute;
 	}
 	public String getString()
 	{
