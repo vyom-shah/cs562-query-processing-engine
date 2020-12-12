@@ -17,10 +17,7 @@ public class MFCode {
 			writer.print("import java.io.*;\n");
 			writer.print("\n");
 			
-			
 			writer.close();
-			
-			
 			
 		} catch(Exception e) {
 			e.printStackTrace();
