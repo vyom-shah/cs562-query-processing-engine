@@ -244,7 +244,7 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+			input=new File("/Users/devilabakrania/git/cs562/562project/Inputs/MFQuery1.txt");
 			code.addArguments(input);
 			
 			System.out.println("Select");
@@ -277,7 +277,37 @@ public class Main_class {
 			System.out.println();
 		}
 		else if(query.equals("EMF")) {
+			input=new File("/Users/devilabakrania/git/cs562/562project/Inputs/EMFQuery1.txt");
+			code.addArguments(input);
 			
+			System.out.println("Select");
+			System.out.println(code.getSelect());
+			System.out.println("Number");
+			System.out.println(code.getNumber());
+			System.out.println("GroupBy");
+			System.out.println(code.getGroupby());
+			System.out.println("Fvect");
+
+			System.out.println(code.getFvect());
+			System.out.println("SuchThat");
+
+			System.out.println(code.getSuchthat());
+			System.out.println("getHaving");
+
+			System.out.println(code.getHaving());
+			System.out.println("getWhere");
+
+			System.out.println(code.getWhere());
+			System.out.println("size where");
+
+			System.out.println(code.getSizeWhere());
+			System.out.println("getSize");
+
+			System.out.println(code.getSizeHaving());
+			System.out.println("EMF Code Generated Successfully!");
+			
+			System.out.println("\n\n");
+			System.out.println();
 		}
 		else
 		{
