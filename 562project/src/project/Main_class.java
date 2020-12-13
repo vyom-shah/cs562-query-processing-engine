@@ -244,7 +244,8 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-			input=new File("/Users/devilabakrania/git/cs562/562project/Inputs/MFQuery1.txt");
+			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+//			input=new File("/Users/devilabakrania/git/cs562/562project/Inputs/MFQuery1.txt");
 			code.addArguments(input);
 			
 			System.out.println("Select");
@@ -271,6 +272,8 @@ public class Main_class {
 			System.out.println("getSize");
 
 			System.out.println(code.getSizeHaving());
+			
+			MFCode.codeMF(dataType);
 			System.out.println("Generation Successful");
 			
 			System.out.println("\n\n");
