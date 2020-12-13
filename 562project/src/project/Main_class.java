@@ -133,8 +133,9 @@ public class Main_class {
 				if(str.contains("_"))
 				{
 					String [] value = str.split("_");
-					GroupVariable fa = new GroupVariable(value[0], value[1], value[2]);
-					select.add(fa.getString());
+					GroupVariable gv = new GroupVariable(value[0], value[1], value[2]);
+					select.add(gv.getString());
+
 				}
 				else
 				{
@@ -162,8 +163,8 @@ public class Main_class {
 			for(String str: fvect)
 			{
 				String [] value = str.split("_");
-				GroupVariable fa = new GroupVariable(value[0], value[1], value[2]);
-				fvect_variable.add(fa);
+				GroupVariable gv = new GroupVariable(value[0], value[1], value[2]);
+				fvect_variable.add(gv);
 			}
 			
 			//Setting such that clause in select_condition variable
@@ -250,6 +251,7 @@ public class Main_class {
 			
 			System.out.println("Select");
 			System.out.println(code.getSelect());
+			
 			System.out.println("Number");
 			System.out.println(code.getNumber());
 			System.out.println("GroupBy");
@@ -331,7 +333,7 @@ class GroupVariable {
 	}
 	public String getString()
 	{
-		return aggregate+""+attribute+""+index;
+		return aggregate+"_"+attribute+"_"+index;
 	}
 }
 
