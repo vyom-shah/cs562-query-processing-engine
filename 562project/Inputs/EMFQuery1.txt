@@ -1,0 +1,7 @@
+select_attribute:prod, month
+where:newtuple.year == 1997
+grouping_attributes:prod, month
+no_gv:2
+fvect:1_count_quant, 2_count_quant
+select_condition:1_newtuple.prod.equals(temp.prod), 2_newtuple.prod.equals(temp.prod), 1_newtuple.month+1 == temp.month, 2_newtuple.month-1 == temp.month
+having_condition:1_newtuple.prod.equals(temp.prod), 2_newtuple.prod.equals(temp.prod)
