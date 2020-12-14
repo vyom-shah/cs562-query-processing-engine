@@ -8,10 +8,8 @@ import java.util.Map;
 public class EMFCode {
 	 public static void codeEMF(HashMap<String, String> dataType) {
 		 try {
-			 //mc = new pv
 			 
-			 Main_class stt = new Main_class();
-			 //File output=anew File("/Users/devilabakrania/eclipse-workspace/final_project/src/final_project/EMFOp.java");
+			    Main_class mc = new Main_class();
 				File output= new File("/Users/devilabakrania/git/cs562/562project/src/project/EMFOp.java");
 				PrintWriter writer=new PrintWriter(output);
 				
@@ -21,7 +19,8 @@ public class EMFCode {
 				writer.print("import java.io.*;\n");
 				writer.print("\n");
 				writer.print("/**Auto-generated File! \n");
-				writer.print("*Author: Devila Bakrania\n*/");
+				writer.print("*Author: Devila Bakrania*/\n\n");
+			
 			    //PVariables stt = new PVariables();
 				
 				//Generate dbTuple Class
@@ -32,10 +31,10 @@ public class EMFCode {
 					
 				//Generate MF Structure Class 
 					writer.print("class MF_structure{\n");
-					for(String value : stt.getGroupby())
+					for(String value : mc.getGroupby())
 						writer.print("\t" + dataType.get(value)+"\t"+ value + ";\n");
 					
-					for (GroupVariable value : stt.getFvect()) {
+					for (GroupVariable value : mc.getFvect()) {
 						if (value.aggregate.equals("avg")) {
 							writer.print("\t" + dataType.get(value.attribute) + "\tsum_" + value.attribute + "_" + value.index + ";\n");
 							writer.print("\t" + dataType.get(value.attribute) + "\tcount_" + value.attribute + "_" + value.index + ";\n");
@@ -45,7 +44,7 @@ public class EMFCode {
 					writer.print("\tvoid output(){\n");
 					//writer.print("\t\t");
 					boolean found = false;
-					for (String value : stt.getGroupby()) {
+					for (String value : mc.getGroupby()) {
 						if (found == false) {
 							writer.print("\t\tSystem.out.printf(\"\\t\"+"+ value+");\n");
 							found = true;
@@ -54,7 +53,7 @@ public class EMFCode {
 					}
 					//writer.print("\");\n");
 
-					for (GroupVariable value : stt.getFvect()) {
+					for (GroupVariable value : mc.getFvect()) {
 						if (value.aggregate.equals("avg")) {
 							writer.print("\t\tif (count_" + value.attribute + "_" + value.index + " == 0)\n");
 							writer.print("\t\t\tSystem.out.printf(\"\\t0\");\n");
@@ -86,8 +85,8 @@ public class EMFCode {
 					writer.print("\tArrayList<MF_structure> result_list = new ArrayList<MF_structure>();\n");
 
 					//Define the aggregate function with index 0
-					if (stt.getFvect().size() > 0) {
-						for (GroupVariable value : stt.getFvect()) {
+					if (mc.getFvect().size() > 0) {
+						for (GroupVariable value : mc.getFvect()) {
 							if (value.aggregate.equals("avg")) {
 								writer.print("\t" + dataType.get(value.attribute) + "\tsum_" + value.attribute + "_" + value.index + " = 0;\n");
 								writer.print("\t" + dataType.get(value.attribute) + "\tcount_" + value.attribute + "_" + value.index + " = 0;\n");
@@ -354,3 +353,4 @@ private static void outputRequiredClass(PrintWriter writer, HashMap<String, Stri
 	writer.print("}\n\n");
 }
 }
+
