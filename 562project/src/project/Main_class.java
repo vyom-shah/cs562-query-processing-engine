@@ -36,7 +36,12 @@ public class Main_class {
 				Scanner sc = new Scanner(input);
 				
 				String inputLine;
-				String [] select_attributes = null, grouping_atributes = null, fvect = null, select_condition = null, where = null, having_condition = null;
+				String [] select_attributes = null;
+				String [] grouping_atributes = null; 
+				String [] fvect = null; 
+				String [] select_condition = null; 
+				String [] where = null; 
+				String [] having_condition = null;
 				int noGV = 0;
 				while (sc.hasNextLine()) {
 					inputLine = sc.nextLine();
@@ -245,8 +250,12 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
-//			input=new File("/Users/devilabakrania/git/cs562/562project/Inputs/MFQuery1.txt");
+//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery2.txt");
+//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery3.txt");
+			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery4.txt");
+//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery5.txt");
+			
 			code.addArguments(input);
 			
 			System.out.println("Select");
