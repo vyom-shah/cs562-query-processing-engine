@@ -13,7 +13,6 @@ public class MFCode {
 		try {
 //			File output=new File("/Users/vyom/eclipse-workspace/562project/src/project/MFOp.java");
 			File output=new File("/Users/vyom/git/cs562/562project/src/project/MF.java");
-//			/Users/vyom/git/cs562/562project/src/project
 			PrintWriter writer=new PrintWriter(output);
 //-----------------------------------------------------------------------------------------			
 			writer.print("package project;\n");
@@ -144,7 +143,6 @@ public class MFCode {
 			// Trying Connection
 			writer.print("\t\ttry {\n");
 			writer.print("\t\t\tConnection con = DriverManager.getConnection(url, usr, pwd);\n");
-			writer.print("\t\t\tSystem.out.println(\"Success connecting server!\");\n");
 
 			// Declaring variables
 			writer.print("\t\t\tResultSet result_set;\n");
@@ -162,7 +160,6 @@ public class MFCode {
 			
 			
 			writer.print("\t\t}catch(Exception e) {\n");
-			writer.print("\t\t\tSystem.out.println(\"Error occured due to:\" + e);\n");
 			writer.print("\t\t\te.printStackTrace();\n");
 			writer.print("\t\t}\n");
 			writer.print("\t}\n");
@@ -171,7 +168,7 @@ public class MFCode {
 //-----------------------------------------------------------------------------------------	
 
 			//Create comapre Methods
-			writer.print("\n\t /** \n\t * These are comapare methods to comapre two string values orinteger values. \n\t * @return boolean true if same or else false. \n\t */ \n");
+			writer.print("\n\t /** \n\t * These are comapare methods to compare two string values orinteger values. \n\t * @return boolean true if same or else false. \n\t */ \n");
 			// TODO Auto-generated method stub
 			  //generate compare method
 			writer.print("\tboolean compare(String str1, String str2){\n");
@@ -182,14 +179,13 @@ public class MFCode {
 //-----------------------------------------------------------------------------------------	
 			
 			//Create addToOutput to build result
-			writer.print("\n\t /** \n\t * This method will filter output data if having conditions exsist. \n\t */ \n");
+			writer.print("\n\t /** \n\t * This method will filter output data if having conditions exist. \n\t */ \n");
 			// TODO Auto-generated method stub
-			Main_class pv = new Main_class(); 
 			writer.print("\tpublic void addToOutput(){\n");
 			writer.print("\t\tfor(MF_Structure ms: mfStruct){\n");
 			writer.print("\t\t\tResult_Attributes ra = new Result_Attributes();\n");
 			
-			for(String str: pv.getGroupby())
+			for(String str: mc.getGroupby())
 			{
 				writer.print("\t\t\t\tra."+str+" = ms."+str+";\n");
 			}
@@ -201,9 +197,9 @@ public class MFCode {
 			
 			//Putting the having condition in the output file for filtering the output.
 			
-			if(pv.getSizeHaving()!= 0)
+			if(mc.getSizeHaving()!= 0)
 			{
-				for(String str: pv.getHaving())
+				for(String str: mc.getHaving())
 				{
 					if(str.contains("sum") || str.contains("avg") || str.contains("max") || str.contains("min") || str.contains("count"))
 					{
@@ -230,9 +226,9 @@ public class MFCode {
 				writer.print("true");
 			}
 			writer.print("){\n");
-			for(String str: pv.getSelect())
+			for(String str: mc.getSelect())
 			{
-				for (GroupVariable fa: pv.getFvect())
+				for (GroupVariable fa: mc.getFvect())
 				{
 					if(str.equals(fa.getString()))
 					{
@@ -253,17 +249,16 @@ public class MFCode {
 			writer.print("\n\t /** \n\t * This method will create format for outputting the data table. \n\t */ \n");
 			// TODO Auto-generated method stub
 			int length;
-//			ParseVariables pv = new ParseVariables();
 			writer.print("\tpublic void outputTable(){\n");
 			
-			for(String str: pv.getSelect())
+			for(String str: mc.getSelect())
 			{
 				length = str.length();
 				writer.print("\t\tSystem.out.printf(\"%-"+length+"s\",\"" +str+"\\t\");\n");
 			}
 			writer.print("\t\tSystem.out.printf(\"\\n\");\n");
 			writer.print("\t\tSystem.out.printf(\"");
-			for(String str: pv.getSelect())
+			for(String str: mc.getSelect())
 			{
 				length = str.length();
 				for(int i =0; i< length; i++)
@@ -275,14 +270,14 @@ public class MFCode {
 			writer.print(" \");\n");
 			writer.print("\t\tfor(Result_Attributes ra: output_attributes){\n");
 			writer.print("\t\t\tSystem.out.printf(\"\\n\");\n");
-			for(String str: pv.getSelect())
+			for(String str: mc.getSelect())
 			{
-				for(String str1: pv.getGroupby())
+				for(String str1: mc.getGroupby())
 				{
 					if(str.equals(str1))
 					{
 						length = str.length();
-						if(str.equals("month") || str.equals("year") || str.equals("days") || str.contentEquals("quant"))
+						if(str.equals("month") || str.equals("year") || str.equals("days") || str.equals("quant"))
 						{
 							writer.print("\t\t\tSystem.out.printf(\"%"+length+"s\\t\", ra."+str+");\n");
 						}
@@ -293,7 +288,7 @@ public class MFCode {
 						
 					}
 				}
-				for(GroupVariable fv : pv.getFvect())
+				for(GroupVariable fv : mc.getFvect())
 				{
 					if(str.equals(fv.getString()))
 					{
@@ -317,14 +312,14 @@ public class MFCode {
 		}
 	}
 	
-	private static void outputWhileLoops(PrintWriter writer, Main_class pv, HashMap<String, String> key_dataType) {
+	private static void outputWhileLoops(PrintWriter writer, Main_class mc, HashMap<String, String> key_dataType) {
 		// TODO Auto-generated method stub
 		List<String> added_elements = new ArrayList<String>();
 		List<String> updated_elements = new ArrayList<String>();
 		
 		//Generating number of while loops equal to number of Grouping variables.
 		writer.print("\n\t\t\t /** \n\t\t\t * Generating while loops for each grouping variable. \n\t\t\t */ \n");
-		for (int i = 0; i < pv.getNumber(); i++) {
+		for (int i = 0; i < mc.getNumber(); i++) {
 			writer.print("\n\t\t\t//While loop for grouping variable "+ (i+1) +".\n");
 			writer.print("\t\t\tresult_set = st.executeQuery(query);\n");
 			writer.print("\t\t\tmore = result_set.next();\n");
@@ -345,8 +340,8 @@ public class MFCode {
 			boolean negative = false;
 			// Filtering data if it has where conditions
 			writer.print("\t\t\t\tif(");
-			if (pv.getSizeWhere() != 0) {
-				for (String str : pv.getWhere()) {
+			if (mc.getSizeWhere() != 0) {
+				for (String str : mc.getWhere()) {
 					str = str.replace(" ", "");
 					if(str.contains("<=") || str.contains(">=") || str.contains(">") || str.contains("<") || str.contains("!="))
 					{
@@ -403,10 +398,10 @@ public class MFCode {
 			//Putting the such that conditions if any.
 			negative = false;
 			writer.print("\t\t\t\t\tif (");
-			for (ST pair : pv.getSuchthat()) 
+			for (ST such_that : mc.getSuchthat()) 
 			{
 				negative = false;
-				String str = pair.getAttribute();
+				String str = such_that.getAttribute();
 				str = str.replace(" ", "");
 				if(str.contains("<=") || str.contains(">=") || str.contains(">") || str.contains("<"))
 				{
@@ -427,7 +422,7 @@ public class MFCode {
 					String [] nameVal = str.split("!==");
 					str = str.replace(str, nameVal[0]+".equals(\""+nameVal[1]+"\")");
 				}
-				if (pair.getIndex() == i + 1 && isSecondSuchThat == false) {
+				if (such_that.getIndex() == i + 1 && isSecondSuchThat == false) {
 					if(negative == true)
 					{
 						isSecondSuchThat = true;
@@ -439,7 +434,7 @@ public class MFCode {
 						writer.print("currentRow." + str);
 					}
 					
-				} else if (pair.getIndex() == i + 1 && isSecondSuchThat == true) {
+				} else if (such_that.getIndex() == i + 1 && isSecondSuchThat == true) {
 					if(negative == true)
 					{
 						writer.print(" && !currentRow." + str);
@@ -461,7 +456,7 @@ public class MFCode {
 
 			boolean isSecondGroupByVariable = false;
 			writer.print("\t\t\t\t\t\t\tif(compare(row.");
-			for(String str: pv.getGroupby())
+			for(String str: mc.getGroupby())
 			{
 				if(isSecondGroupByVariable == false)
 				{
@@ -479,7 +474,7 @@ public class MFCode {
 			
 			
 			//Outputting the aggregate functions if record is added already.
-			for(GroupVariable fa: pv.getFvect())
+			for(GroupVariable fa: mc.getFvect())
 			{
 				 if (Integer.parseInt(fa.index) == i+1){
 	                    if (fa.aggregate.equals("avg")){
@@ -530,11 +525,11 @@ public class MFCode {
 			//If record is found for the first time the following lines will called.
 			writer.print("\t\t\t\t\t\tif(found == false){\n");
 			writer.print("\t\t\t\t\t\t\tMF_Structure addCurrentRow = new MF_Structure();\n");
-			for(String str: pv.getGroupby())
+			for(String str: mc.getGroupby())
 			{
 				writer.print("\t\t\t\t\t\t\taddCurrentRow."+str+" = currentRow."+str+";\n");
 			}
-			for(GroupVariable fa: pv.getFvect())
+			for(GroupVariable fa: mc.getFvect())
 			{	
 				if(Integer.parseInt(fa.index) == i+1)
 				{
