@@ -302,10 +302,20 @@ public class Main_class {
 			System.out.println(code.getGroupby());
 			System.out.println("Fvect");
 
-			System.out.println(code.getFvect());
+			System.out.print("[");
+			for(GroupVariable ak:code.getFvect()) {
+				System.out.print(ak.getString()+" ");
+			}
+			System.out.print("]\n");
 			System.out.println("SuchThat");
 
 			System.out.println(code.getSuchthat());
+			
+			for(ST ak:code.getSuchthat()) {
+				System.out.print(ak.toString());
+			}
+			System.out.println("\n");
+			
 			System.out.println("getHaving");
 
 			System.out.println(code.getHaving());
@@ -322,6 +332,13 @@ public class Main_class {
 			
 			System.out.println("\n\n");
 			System.out.println();
+			
+			//START CODE
+			//GroupVariable gv = new GroupVariable();
+			EMFCode.codeEMF(dataType);
+			
+			//END CODE
+			
 		}
 		else
 		{
