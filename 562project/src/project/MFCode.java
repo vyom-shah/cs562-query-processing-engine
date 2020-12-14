@@ -7,20 +7,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * MFCode class to generate MF.java file
+ * 
+ * @author vyom
+ *
+ */
 public class MFCode {
 
+	/**
+	 * First method of the code, where execution begins
+	 * 
+	 * @param dataType
+	 */
 	public static void codeMF(HashMap<String, String> dataType) {
 		try {
-//			File output=new File("/Users/vyom/eclipse-workspace/562project/src/project/MFOp.java");
 			File output = new File("/Users/vyom/git/cs562/562project/src/project/MF.java");
 			PrintWriter writer = new PrintWriter(output);
-//-----------------------------------------------------------------------------------------			
 			writer.print("package project;\n");
 			writer.print("import java.sql.*;\n");
 			writer.print("import java.util.*;\n");
 			writer.print("import java.io.*;\n");
-//-----------------------------------------------------------------------------------------			
 
+			// creating main class
 			writer.print("public class MF {\n");
 			writer.print("\t//Variables to connect to DB\n");
 			writer.print("\tprivate static final String usr = \"postgres\";\n"
@@ -28,26 +37,24 @@ public class MFCode {
 					+ "	private static final String url = \"jdbc:postgresql://localhost/project\";\n");
 
 			writer.print("\t//Variables to generate the output\n");
-			writer.print("\tList<Result_Attributes> output_attributes = new ArrayList<Result_Attributes>();\n");
+			writer.print("\tList<Result> output_attributes = new ArrayList<Result>();\n");
 			writer.print("\tList<MF_Structure> mfStruct = new ArrayList<MF_Structure>();\n");
 			writer.print("\n");
 
-			// Generate DB structure
+			// Generate DataBase Structure of sales table
 			writer.print("\t /** \n\t * This class contains the DB schema \n\t */ \n");
-
-//-----------------------------------------------------------------------------------------	
 			writer.print("\tpublic class DBStruct{\n");
 			for (Map.Entry<String, String> entry : dataType.entrySet())
 				writer.print("\t\t" + entry.getValue() + " " + entry.getKey() + ";\n");
 
 			writer.print("\t}\n");
 
-//-----------------------------------------------------------------------------------------	
-			writer.print("\n\t /** \n\t * This class contains the selection attributes \n\t */ \n");
+			// Generating select attributes
+			writer.print("\n\t /** \n\t *  Selection attributes \n\t */ \n");
 			Main_class mc = new Main_class();
 
-			// Class Result_Attributes
-			writer.print("\tpublic class Result_Attributes{\n");
+			// Class Result
+			writer.print("\tpublic class Result{\n");
 			for (String str : mc.getSelect()) {
 				if (dataType.get(str) != null) {
 					writer.print("\t\t" + dataType.get(str) + " " + str + ";\n");
@@ -57,9 +64,8 @@ public class MFCode {
 			}
 			writer.print("\t}\n");
 
-//-----------------------------------------------------------------------------------------	
-			writer.print(
-					"\n\t /** \n\t * This class contains all f-vect attributes \n\t * and group by attribues \n\t */ \n");
+			// generate f-vect and groupby attributes
+			writer.print("\n\t /** \n\t * f-vect attributes \n\t * and group by attribues \n\t */ \n");
 			List<String> added_elements = new ArrayList<String>();
 
 			// Class MF_Structure
@@ -75,9 +81,9 @@ public class MFCode {
 			for (GroupVariable gv : mc.getFvect()) {
 
 				/**
-				 * Checking if the aggregate function is average or not.
 				 * 
-				 * If it is average divide it into sum and count to calculate average.
+				 * Check if aggregate is average, divide it into sum and count to calculate
+				 * average.
 				 */
 
 				if (gv.aggregate.equals("avg")) {
@@ -106,36 +112,25 @@ public class MFCode {
 
 			}
 			writer.print("\t}\n");
-//-----------------------------------------------------------------------------------------	
 			// Writing the main method in the output file.
-			writer.print("\n\t /** \n\t * Main - method \n\t * The program will start here. \n\t */ \n");
+			writer.print("\n\t /** \n\t * The Main method \n\t */ \n");
 			writer.print("\tpublic static void main(String [] args){\n");
 
 			writer.print("\n\t\tMF mf = new MF();\n");
-			writer.print("\t\tmf.connect();\n");
-			writer.print("\t\tmf.retrive();\n");
-			writer.print("\t\tmf.addToOutput();\n");
-			writer.print("\t\tmf.outputTable();\n");
-
-			writer.print("\t}\n");
-
-			// Create functions for connection
-			writer.print("\n\t /** \n\t * This method will load the drivers for the DB. \n\t */ \n");
-//-----------------------------------------------------------------------------------------	
-
-			writer.print("\tpublic void connect(){\n");
 			writer.print("\t\ttry {\n");
-			writer.print("\t\tClass.forName(\"org.postgresql.Driver\");\n");
-			writer.print("\t\tSystem.out.println(\"Success loading Driver!\");\n");
+			writer.print("\t\t\tClass.forName(\"org.postgresql.Driver\");\n");
+			writer.print("\t\t\tSystem.out.println(\"Success loading Driver!\");\n");
 			writer.print("\t\t} catch(Exception exception) {\n");
 			writer.print("\t\texception.printStackTrace();\n");
-			writer.print("\t\t}\n\t}\n");
-//-----------------------------------------------------------------------------------------	
+			writer.print("\t\t}\n");
+			writer.print("\t\tmf.retrive();\n\n");
+			writer.print("\t\tmf.addToOutput();\n\n");
+			writer.print("\t\tmf.outputTable();\n");
+			writer.print("\t}\n");
 
-			// Main logic
-			writer.print("\n\t /** \n\t * This method will create the data set required. \n\t */ \n");
+			// Exection of main logic of the code
+			writer.print("\n\t /** \n\t * Data set \n\t */ \n");
 			writer.print("\tpublic void retrive(){\n");
-			// Trying Connection
 			writer.print("\t\ttry {\n");
 			writer.print("\t\t\tConnection con = DriverManager.getConnection(url, usr, pwd);\n");
 
@@ -153,37 +148,29 @@ public class MFCode {
 			writer.print("\t\t}\n");
 			writer.print("\t}\n");
 
-//-----------------------------------------------------------------------------------------	
-
-			// Create compare Methods
+			// Create compare Methods to check
 			writer.print(
 					"\n\t /** \n\t * These are comapare methods to compare two string values orinteger values. \n\t * @return boolean true if same or else false. \n\t */ \n");
-			// TODO Auto-generated method stub
-			// generate compare method
 			writer.print("\tboolean compare(String str1, String str2){\n");
 			writer.print("\t\treturn str1.equals(str2);\n\t}\n");
 			writer.print("\tboolean compare(int num1, int num2){\n");
 			writer.print("\t\treturn (num1 == num2);\n\t}\n");
 
-//-----------------------------------------------------------------------------------------	
-
 			// Create addToOutput to build result
-			writer.print("\n\t /** \n\t * This method will filter output data if having conditions exist. \n\t */ \n");
-			// TODO Auto-generated method stub
+			writer.print("\n\t /** \n\t * filtering output data if having conditions exist. \n\t */ \n");
 			writer.print("\tpublic void addToOutput(){\n");
 			writer.print("\t\tfor(MF_Structure ms: mfStruct){\n");
-			writer.print("\t\t\tResult_Attributes ra = new Result_Attributes();\n");
+			writer.print("\t\t\tResult ra = new Result();\n");
 
 			for (String str : mc.getGroupby()) {
 				writer.print("\t\t\t\tra." + str + " = ms." + str + ";\n");
 			}
 
 			writer.print("\t\t\tif(");
-
+			// Declaring variable to set to true if the second having condition exists
 			boolean isSecondHaving = false;
 
 			// Putting the having condition in the output file for filtering the output.
-
 			if (mc.getSizeHaving() != 0) {
 				for (String str : mc.getHaving()) {
 					if (str.contains("sum") || str.contains("avg") || str.contains("max") || str.contains("min")
@@ -221,11 +208,8 @@ public class MFCode {
 			writer.print("\t\t}\n");
 			writer.print("\t}\n");
 
-//-----------------------------------------------------------------------------------------	
-
 			// Generate method to print output
 			writer.print("\n\t /** \n\t * This method will create format for outputting the data table. \n\t */ \n");
-			// TODO Auto-generated method stub
 			int length;
 			writer.print("\tpublic void outputTable(){\n");
 
@@ -243,7 +227,7 @@ public class MFCode {
 				writer.print("\\t");
 			}
 			writer.print(" \");\n");
-			writer.print("\t\tfor(Result_Attributes ra: output_attributes){\n");
+			writer.print("\t\tfor(Result ra: output_attributes){\n");
 			writer.print("\t\t\tSystem.out.printf(\"\\n\");\n");
 			for (String str : mc.getSelect()) {
 				for (String str1 : mc.getGroupby()) {
@@ -276,7 +260,15 @@ public class MFCode {
 		}
 	}
 
-	private static void outputWhileLoops(PrintWriter writer, Main_class mc, HashMap<String, String> key_dataType) {
+	/**
+	 * The core logic of writing the while loops based on the number of grouping
+	 * variables
+	 * 
+	 * @param writer
+	 * @param mc
+	 * @param dataType
+	 */
+	private static void outputWhileLoops(PrintWriter writer, Main_class mc, HashMap<String, String> dataType) {
 		// TODO Auto-generated method stub
 		List<String> added_elements = new ArrayList<String>();
 		List<String> updated_elements = new ArrayList<String>();
@@ -289,7 +281,7 @@ public class MFCode {
 			writer.print("\t\t\tmore = result_set.next();\n");
 			writer.print("\t\t\twhile(more){\n");
 			writer.print("\t\t\t\tDBStruct currentRow = new DBStruct();\n");
-			for (Map.Entry<String, String> entry : key_dataType.entrySet()) {
+			for (Map.Entry<String, String> entry : dataType.entrySet()) {
 				if (entry.getValue().equals("String")) {
 					writer.print("\t\t\t\tcurrentRow." + entry.getKey() + " = result_set.getString(\"" + entry.getKey()
 							+ "\");\n");
@@ -302,7 +294,8 @@ public class MFCode {
 			boolean isSecondWhere = false;
 			boolean isSecondSuchThat = false;
 			boolean not = false;
-			// Filtering data if it has where conditions
+			// Filtering data if it has where conditions and making necessary modifications
+			// in case it encounters = operator
 			writer.print("\t\t\t\tif(");
 			if (mc.getSizeWhere() != 0) {
 				for (String str : mc.getWhere()) {
@@ -460,7 +453,7 @@ public class MFCode {
 			writer.print("\t\t\t\t\t\t\t}\n");
 			writer.print("\t\t\t\t\t\t}\n");
 
-			// If record is found for the first time the following lines will called.
+			// If record is found for the first time
 			writer.print("\t\t\t\t\t\tif(found == false){\n");
 			writer.print("\t\t\t\t\t\t\tMF_Structure addCurrentRow = new MF_Structure();\n");
 			for (String str : mc.getGroupby()) {
