@@ -112,7 +112,7 @@ public class Main_class {
 
 	private static void getArguments(String[] select_attributes, String[] grouping_atributes, String[] fvect,
 			String[] select_condition, int noGV, String[] where, String[] having_condition) {
-		
+
 		for (String str : select_attributes) {
 			if (str.contains("_")) {
 				String[] value = str.split("_");
@@ -197,8 +197,9 @@ public class Main_class {
 		code.connect();
 
 		dataType = Schema.getSchema();
-		System.out.println(dataType);
-		System.out.println("Please enter MF of EMF depending on what type of query you want to run");
+
+		System.out.println("The datatype of the given sales table: " + dataType);
+		System.out.println("Please enter MF of EMF depending on what type of query you want to run:");
 		Scanner in = new Scanner(System.in);
 		String query = in.nextLine();
 		query = query.replace(" ", "");
@@ -213,39 +214,40 @@ public class Main_class {
 
 			code.addArguments(input);
 
-			System.out.println("Select");
+			System.out.println("Select attributes:");
 			System.out.println(code.getSelect());
 
-			System.out.println("Number");
+			System.out.println("Number of GV:");
 			System.out.println(code.getNumber());
-			System.out.println("GroupBy");
+
+			System.out.println("GroupBy:");
 			System.out.println(code.getGroupby());
-			System.out.println("Fvect");
 
+			System.out.println("Fvect attributes:");
 			System.out.println(code.getFvect());
-			System.out.println("SuchThat");
 
+			System.out.println("SuchThat:");
 			System.out.println(code.getSuchthat());
-			System.out.println("getHaving");
 
+			System.out.println("getHaving clause:");
 			System.out.println(code.getHaving());
-			System.out.println("getWhere");
 
+			System.out.println("getWhere clause:");
 			System.out.println(code.getWhere());
-			System.out.println("size where");
 
+			System.out.println("size of where:");
 			System.out.println(code.getSizeWhere());
-			System.out.println("getSize");
 
+			System.out.println("getSize of having clause:");
 			System.out.println(code.getSizeHaving());
 
 			MFCode.codeMF(dataType);
-			System.out.println("Generation Successful");
 
+			System.out.println("Generation Successful");
 			System.out.println("\n\n");
 			System.out.println();
 		} else if (query.equals("EMF")) {
-			input = new File("/Users/devilabakrania/git/cs562/562project/Inputs/EMFQuery1.txt");
+			input = new File("/Users/vyom/git/cs562/562project/Inputs/EMFQuery1.txt");
 			code.addArguments(input);
 
 			System.out.println("Select");
