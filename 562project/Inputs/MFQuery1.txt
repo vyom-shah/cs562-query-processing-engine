@@ -9,7 +9,6 @@ grouping_attributes:prod, cust
 
 fvect:1_sum_quant, 1_avg_quant, 2_avg_quant, 2_sum_quant, 3_avg_quant, 3_sum_quant, 3_count_quant
 
-
 select:1_state = "NY", 2_state="NJ", 3_state="CT"
 
 where:
