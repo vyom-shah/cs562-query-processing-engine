@@ -126,7 +126,7 @@ public class EMFCode {
 		}
 	
 private static void outputRetriveMethod(PrintWriter writer, HashMap<String, String> dataType) {
-	Main_class stt = new Main_class();
+	Main_class mc = new Main_class();
 	// TODO Auto-generated method stub
 	writer.print("\tvoid retrieve(){\n");
 	writer.print("\t\ttry {\n");
@@ -147,8 +147,8 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 		if (entry.getValue().equals("int")) 
 			writer.print("\t\t\tnewtuple." + entry.getKey() + " = rs.getInt(\"" + entry.getKey() + "\");\n");
 	}
-	if (stt.getFvect().size() > 0) {
-		for (GroupVariable value : stt.getFvect()) {
+	if (mc.getFvect().size() > 0) {
+		for (GroupVariable value : mc.getFvect()) {
 			if (value.aggregate.equals("sum")) 
 				writer.print("\t\t\t" + value.getString() + " += newtuple." + value.attribute + ";\n");
 			else if (value.aggregate.equals("max")) 
@@ -165,10 +165,10 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 	}
 	boolean flag = false;
 	writer.print("\t\t\tif(");
-	if (stt.getSizeWhere() == 0) 
+	if (mc.getSizeWhere() == 0) 
 		writer.print("true");
 	 else {
-		for (String temp : stt.getWhere()) {
+		for (String temp : mc.getWhere()) {
 			if (flag == false) {
 				writer.print(temp);
 				flag = true;
@@ -183,7 +183,7 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 	//Finding if the grouping attributes are already in the list
 	writer.print("\t\t\t\t\t if(compare(temp.");
 	flag = false;
-	for (String value : stt.getGroupby()) {
+	for (String value : mc.getGroupby()) {
 		if (flag == false) {
 			writer.print(value + ",newtuple." + value + ")");
 			flag = true;
@@ -198,10 +198,10 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 	writer.print("\t\t\t\t}\n");
 	writer.print("\t\t\t\tif (found == false){\n");
 	writer.print("\t\t\t\t\tMF_structure newrow = new MF_structure();\n");
-	for (String value : stt.getGroupby()) 
+	for (String value : mc.getGroupby()) 
 		writer.print("\t\t\t\t\tnewrow." + value + " = newtuple." + value + ";\n");
 	
-	for (GroupVariable value : stt.getFvect()) {
+	for (GroupVariable value : mc.getFvect()) {
 		if (value.aggregate.equals("avg")) {
 			writer.print("\t\t\t\t\tnewrow.sum_" + value.attribute + "_" + value.index + " = 0;\n");
 			writer.print("\t\t\t\t\tnewrow.count_" + value.attribute + "_" + value.index + " = 0;\n");
@@ -220,7 +220,7 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 	writer.print("\t\t}\n\n");
 
 	//Generating core code
-	for (int i = 1; i <= stt.getNumber(); i++) {
+	for (int i = 1; i <= mc.getNumber(); i++) {
 		writer.print("\t\trs = st.executeQuery(ret);\n");
 		writer.print("\t\tmore=rs.next();\n");
 		writer.print("\t\twhile(more){\n");
@@ -235,10 +235,10 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 
 		flag = false;
 		writer.print("\t\t\tif(");
-		if (stt.getSizeWhere() == 0)
+		if (mc.getSizeWhere() == 0)
 			writer.print("true");
 		else {
-			for (String value : stt.getWhere()) {
+			for (String value : mc.getWhere()) {
 				if (flag == false) {
 					writer.print(value);
 					flag = true;
@@ -251,7 +251,7 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 		writer.print("\t\t\t\tfor (MF_structure temp : result_list){\n");
 
 		writer.print("\t\t\t\t\tif (");
-		for (ST value : stt.getSuchthat()) {
+		for (ST value : mc.getSuchthat()) {
 			if (value.index == i && flag == false) {
 				flag = true;
 				writer.print(value.attribute);
@@ -262,7 +262,7 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 			writer.print("true");
 		flag = false;
 		writer.print("){\n");
-		for (GroupVariable value : stt.getFvect()) {
+		for (GroupVariable value : mc.getFvect()) {
 			if (Integer.parseInt(value.index) == i) {
 				if (value.aggregate.equals("avg")) {
 					writer.print("\t\t\t\t\t\ttemp.sum_" + value.attribute + "_" + value.index + " += newtuple."
@@ -297,7 +297,8 @@ private static void outputRetriveMethod(PrintWriter writer, HashMap<String, Stri
 }
 private static void outputRequiredClass(PrintWriter writer, HashMap<String, String> dataType) {
 	// TODO Auto-generated method stub
-	PVariables gv = new PVariables();
+	//PVariables gv = new PVariables();
+	  Main_class mc = new Main_class();
 	// generate class dbTuple
 	writer.print("class dbTuple{\n");
 	for (Map.Entry<String, String> entry : dataType.entrySet())
@@ -307,10 +308,10 @@ private static void outputRequiredClass(PrintWriter writer, HashMap<String, Stri
 	/* generate mf structure class */
 	writer.print("class MF_structure{\n");
 	// output grouping attributes
-	for (String temp : gv.getGroupby())
+	for (String temp : mc.getGroupby())
 		writer.print("\t" + dataType.get(temp) + "\t" + temp + ";\n");
 	// output select attributes
-	for (GroupVariable temp : gv.getFvect()) {
+	for (GroupVariable temp : mc.getFvect()) {
 		if (temp.aggregate.equals("avg")) {
 			writer.print("\t" + dataType.get(temp.attribute) + "\tsum_" + temp.attribute + "_" + temp.index + ";\n");
 			writer.print("\t" + dataType.get(temp.attribute) + "\tcount_" + temp.attribute + "_" + temp.index + ";\n");
@@ -320,7 +321,7 @@ private static void outputRequiredClass(PrintWriter writer, HashMap<String, Stri
 	writer.print("\tvoid output(){\n");
 	writer.print("\t\tSystem.out.printf(");
 	boolean found = false;
-	for (String value : gv.getGroupby()) {
+	for (String value : mc.getGroupby()) {
 		if (found == false) {
 			writer.print(value);
 			found = true;
@@ -328,7 +329,7 @@ private static void outputRequiredClass(PrintWriter writer, HashMap<String, Stri
 			writer.print("+\"\\t\"+" + value);
 	}
 	writer.print(");\n");
-	for (GroupVariable value : gv.getFvect()) {
+	for (GroupVariable value : mc.getFvect()) {
 		if (value.aggregate.equals("avg")) {
 			writer.print("\t\tif (count_" + value.attribute + "_" + value.index + " == 0)\n");
 			writer.print("\t\t\tSystem.out.printf(\"\\t0\");\n");
