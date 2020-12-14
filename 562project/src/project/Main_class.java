@@ -250,10 +250,10 @@ public class Main_class {
 		
 		if(query.equals("MF"))
 		{
-//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
+			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery1.txt");
 //			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery2.txt");
 //			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery3.txt");
-			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery4.txt");
+//			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery4.txt");
 //			input=new File("/Users/vyom/git/cs562/562project/Inputs/MFQuery5.txt");
 			
 			code.addArguments(input);
